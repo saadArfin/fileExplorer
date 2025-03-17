@@ -7,6 +7,7 @@ function Folder({ explorer }) {
     visible: false,
     isFolder: null,
   });
+  const [a, setA] = useState(0)
 
   const handleNewFolder = (e, isFolder) => {
     e.stopPropagation();
