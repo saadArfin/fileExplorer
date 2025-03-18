@@ -1,13 +1,12 @@
 import { useState } from "react";
 
-function Folder({ explorer }) {
+function Folder({ handleInsertNode, explorer }) {
   console.log(explorer);
   const [expand, setExpand] = useState(false);
   const [showInput, setShowInput] = useState({
     visible: false,
     isFolder: null,
   });
-  const [a, setA] = useState(0)
 
   const handleNewFolder = (e, isFolder) => {
     e.stopPropagation();
@@ -16,6 +15,13 @@ function Folder({ explorer }) {
       visible: true,
       isFolder,
     });
+  };
+
+  const onAddFolder = (e) => {
+    if (e.keyCode === 13 && e.target.value) {
+      handleInsertNode(explorer.id, e.target.value, showInput.isFolder);
+      setShowInput({ ...showInput, visible: false });
+    }
   };
 
   if (explorer.isFolder) {
@@ -35,13 +41,20 @@ function Folder({ explorer }) {
               <input
                 className="inputContainer__input"
                 type="text"
+                onKeyDown={onAddFolder}
                 onBlur={() => setShowInput({ ...showInput, visible: false })}
                 autoFocus
               />
             </div>
           )}
           {explorer.items.map((exp) => {
-            return <Folder explorer={exp} key={exp.id} />;
+            return (
+              <Folder
+                handleInsertNode={handleInsertNode}
+                explorer={exp}
+                key={exp.id}
+              />
+            );
           })}
         </div>
       </div>
